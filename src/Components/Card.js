@@ -1,8 +1,11 @@
 // Card.js
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { editPlace, deletePlace } from '../redux/action';
 
 function Card(props) {
-  const { index, imgUrl, imgName, imgLocation, imgRating, onEditPlace, onDeletePlace } = props;
+  const dispatch = useDispatch();
+  const { index, imgUrl, imgName, imgLocation, imgRating } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [editedPlace, setEditedPlace] = useState({ imgUrl, imgName, imgLocation, imgRating });
 
@@ -11,18 +14,18 @@ function Card(props) {
   };
 
   const handleSaveEdit = () => {
-    // Validate and save changes
-    onEditPlace(index, editedPlace);
+    dispatch(editPlace(index, editedPlace));
     setIsEditing(false);
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setEditedPlace({ imgUrl, imgName, imgLocation, imgRating }); // Reset editedPlace to original values
+    // Reset editedPlace to original values
+    setEditedPlace({ imgUrl, imgName, imgLocation, imgRating });
   };
 
   const handleDelete = () => {
-    onDeletePlace(index);
+    dispatch(deletePlace(index));
   };
 
   return (
@@ -42,7 +45,7 @@ function Card(props) {
               onChange={(e) => setEditedPlace({ ...editedPlace, imgLocation: e.target.value })}
             />
             <button className="card__btn" onClick={handleSaveEdit}>Save</button>
-            <button  className="card__btn" onClick={handleCancelEdit}>Cancel</button>
+            <button className="card__btn" onClick={handleCancelEdit}>Cancel</button>
           </>
         ) : (
           <>

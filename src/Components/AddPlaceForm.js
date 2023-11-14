@@ -1,7 +1,10 @@
 // AddPlaceForm.js
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addPlace, toggleForm } from '../redux/action'; // Adjust the import path accordingly
 
-function AddPlaceForm(props) {
+function AddPlaceForm() {
+  const dispatch = useDispatch();
   const [imageUrl, setImageUrl] = useState('');
   const [photoName, setPhotoName] = useState('');
   const [photoLocation, setPhotoLocation] = useState('');
@@ -10,19 +13,20 @@ function AddPlaceForm(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-
-    props.onAddPlace({
+    dispatch(addPlace({
       imgUrl: imageUrl,
       imgName: photoName,
       imgLocation: photoLocation,
       imgRating: rating,
-    });
+    }));
 
     // Clear the form fields
     setImageUrl('');
     setPhotoName('');
     setPhotoLocation('');
     setRating('');
+
+    dispatch(toggleForm());
   };
 
   return (
